@@ -6,13 +6,33 @@ from config import config
 from servicesCore.requestCore_service import RequestCoreService
 from servicesExternal.web3_single import Web3Single
 
-
+requestCoreArtifact = Artifacts.requestCoreArtifact
+requestSynchroneExtensionEscrowArtifact = Artifacts.requestSynchroneExtensionEscrowArtifact
 class RequestSynchroneExtensionEscrowService:
     def __init__(self):
-        pass
+        global requestCoreArtifact, requestSynchroneExtensionEscrowArtifact
+        self._web3Single = Web3Single.getInstance()
+        self._abiRequestCore = requestCoreArtifact.abi
+        self._requestCoreServices = RequestCoreService()
+        networkName = self._web3Single.networkName
+        self._abiSynchroneExtensionEscrow = requestSynchroneExtensionEscrowArtifact.abi
+        if not requestSynchroneExtensionEscrowArtifact[networkName] :
+            raise ValueError('Escrow Artifact no configuration for network: ' + networkName)
+        self._addressSynchroneExtensionEscrow = requestSynchroneExtensionEscrowArtifact.networks[networkName].address
+        self._instanceSynchroneExtensionEscrow = self._web3Single.web3.eth.Contract(
+            self._abiSynchroneExtensionEscrow,
+            self._addressSynchroneExtensionEscrow)
 
     def parseParameters(self, extensionParams: List[Any]) -> Any:
-        pass
+        if not extensionParams or not self._web3Single.isAddressNoChecksum(extensionParams[0]):
+            return {'error' : ValueError('first parameter must be a valid eth address')}
+        ret : List[Any] = []
+        #no idea about address parameter
+        ret.append(self._web3Single.toSolidityBytes32(address, extensionParams[0]))
+        for i in range(1,9):
+            ret.append(self._web3Single.toSolidityBytes32('bytes32',0S))
+        return {'result' : ret}
+
 
     def releaseToPayeeAction(self, requestId: str, options: Any = None):
         pass

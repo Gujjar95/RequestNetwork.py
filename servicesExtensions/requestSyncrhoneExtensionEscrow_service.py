@@ -30,7 +30,7 @@ class RequestSynchroneExtensionEscrowService:
         #no idea about address parameter
         ret.append(self._web3Single.toSolidityBytes32(address, extensionParams[0]))
         for i in range(1,9):
-            ret.append(self._web3Single.toSolidityBytes32('bytes32',0S))
+            ret.append(self._web3Single.toSolidityBytes32('bytes32',0))
         return {'result' : ret}
 
 

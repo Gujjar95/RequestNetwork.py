@@ -28,7 +28,7 @@ class RequestSynchroneExtensionEscrowService:
             return {'error' : ValueError('first parameter must be a valid eth address')}
         ret : List[Any] = []
         #no idea about address parameter
-        ret.append(self._web3Single.toSolidityBytes32(address, extensionParams[0]))
+        ret.append(self._web3Single.toSolidityBytes32("address", extensionParams[0]))
         for i in range(1,9):
             ret.append(self._web3Single.toSolidityBytes32('bytes32',0))
         return {'result' : ret}
